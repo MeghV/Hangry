@@ -1,0 +1,96 @@
+@import 'grid.css';
+
+$bg: url('../img/great.jpg');
+$black: #000;
+
+/* Mixins */
+
+@mixin background-props {
+	background: {
+		image: $bg;
+		size: cover;
+		position: right bottom;
+		repeat: no-repeat;
+
+	}
+}
+
+@mixin center-margin {
+	margin-left: auto;
+	margin-right: auto;
+}
+
+@mixin padding($top, $bottom, $left, $right) {
+	padding-top: $top;
+	padding-bottom: $bottom;
+	padding-left: $left;
+	padding-right: $right;
+}
+
+@mixin padding-tb($top, $bottom) {
+	padding-top: $top;
+	padding-bottom: $bottom;	
+}
+
+/* General Rules */
+
+.bg {
+	@include background-props;
+	position: absolute;
+	top: 0;
+	bottom: 0;
+	left: 0;
+	height: 0;
+	min-width: 100%;
+	height: 100%;
+	overflow: hidden;
+	z-index: -1;
+	-webkit-filter: blur(3px);
+}
+html {
+	position: relative;
+	height: 100%;
+}
+body {
+	// @include background-props;
+	background: $black;
+	width: 100%; 
+}
+
+main {
+	width: 60%;
+	margin-top: 15px;
+	@include center-margin;
+	@media screen and (max-width: 1024px) {
+		width: 90%;
+	}
+	> div {
+		width: 100%;
+		display: block;
+		float: left;
+		clear: both;
+
+	}
+}
+
+.logo {
+	background: rgba(0, 20, 23, .8);
+	color: white;
+	@include padding-tb(10px, 10px);
+	margin-bottom: 0px;
+	h1 {
+		font-size: 3.5em;
+	}
+}
+
+.location {
+	margin-top: 0px;
+	background: rgba(227, 227, 227, .8);
+}
+
+.tiles {
+	background: black;
+	width: 90%;
+	@include center-margin;
+}
+/* Media Rules */
