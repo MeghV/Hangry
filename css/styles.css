@@ -43,7 +43,7 @@ main {
   background: rgba(0, 20, 23, 0.8);
   color: white;
   padding-top: 10px;
-  padding-bottom: 10px;
+  padding-bottom: 0px;
   margin-bottom: 0px; }
   .logo h1 {
     font-size: 3.5em; }
@@ -52,10 +52,33 @@ main {
   margin-top: 0px;
   background: rgba(227, 227, 227, 0.8); }
 
-.tiles {
-  background: black;
-  width: 90%;
-  margin-left: auto;
-  margin-right: auto; }
+ul {
+  width: 100%;
+  margin: 0 auto;
+  list-style: none;
+  text-align: center;
+  display: inline-block;
+  padding: 0; }
+  ul li {
+    background: rgba(0, 0, 0, 0.6);
+    color: white;
+    float: left;
+    border: 1px solid black;
+    margin-right: 2%;
+    width: 23%;
+    box-sizing: border-box;
+    height: 200px;
+    line-height: 200px;
+    -webkit-transition: all 0.5s ease;
+    -moz-transition: all 0.5s ease;
+    -o-transition: all 0.5s ease;
+    -ms-transition: all 0.5s ease;
+    transition: all 0.5s ease; }
+    ul li#last {
+      margin-right: 0; }
+    ul li:hover {
+      border: 1px solid red;
+      cursor: pointer;
+      background: rgba(0, 0, 0, 0.4); }
 
 /* Media Rules */

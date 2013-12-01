@@ -2,6 +2,7 @@
 
 $bg: url('../img/great.jpg');
 $black: #000;
+$tiles: 4;
 
 /* Mixins */
 
@@ -21,15 +22,27 @@ $black: #000;
 }
 
 @mixin padding($top, $bottom, $left, $right) {
-	padding-top: $top;
-	padding-bottom: $bottom;
-	padding-left: $left;
-	padding-right: $right;
+	padding: {
+		top: $top;
+		bottom: $bottom;
+		left: $left;
+		right: $right;
+	}
 }
 
 @mixin padding-tb($top, $bottom) {
-	padding-top: $top;
-	padding-bottom: $bottom;	
+	padding: {
+		top: $top;
+		bottom: $bottom;
+	}
+}
+
+@mixin transitions($transition) {
+	-webkit-transition: $transition;                  
+    -moz-transition: $transition;                 
+    -o-transition: $transition;   
+    -ms-transition: $transition;          
+    transition: $transition;
 }
 
 /* General Rules */
@@ -76,7 +89,7 @@ main {
 .logo {
 	background: rgba(0, 20, 23, .8);
 	color: white;
-	@include padding-tb(10px, 10px);
+	@include padding-tb(10px, 0px);
 	margin-bottom: 0px;
 	h1 {
 		font-size: 3.5em;
@@ -88,9 +101,35 @@ main {
 	background: rgba(227, 227, 227, .8);
 }
 
-.tiles {
-	background: black;
-	width: 90%;
-	@include center-margin;
+ul {
+	$width: 100%;
+	width: $width;
+	margin: 0 auto;
+	list-style: none;
+	text-align: center;
+	display: inline-block;
+	padding: 0;
+	li {
+		background: rgba(0,0,0,.6);
+		color: white;
+		float: left;
+		border: 1px solid black;
+		$margin-r: 2%;
+		margin-right: $margin-r;
+		width: ($width / $tiles) - ($margin-r);
+		&#last {
+			margin-right: 0;
+		}
+		box-sizing: border-box;
+		$height: 200px;
+		height: $height;
+		line-height: $height;
+		@include transitions(all .5s ease);
+		&:hover {
+			border: 1px solid red;
+			cursor: pointer;
+			background: rgba(0,0,0,.4);
+		}
+	}
 }
 /* Media Rules */
