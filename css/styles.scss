@@ -1,8 +1,9 @@
 @import 'grid.css';
 
-$bg: url('../img/great.jpg');
+$bg: url('../img/asian.jpg');
 $black: #000;
 $tiles: 4;
+
 
 /* Mixins */
 
@@ -10,7 +11,6 @@ $tiles: 4;
 	background: {
 		image: $bg;
 		size: cover;
-		position: right bottom;
 		repeat: no-repeat;
 
 	}
@@ -58,7 +58,7 @@ $tiles: 4;
 	height: 100%;
 	overflow: hidden;
 	z-index: -1;
-	-webkit-filter: blur(3px);
+	-webkit-filter: blur(2px);
 }
 html {
 	position: relative;
@@ -75,7 +75,7 @@ main {
 	margin-top: 15px;
 	@include center-margin;
 	@media screen and (max-width: 1024px) {
-		width: 90%;
+		width: 100%;
 	}
 	> div {
 		width: 100%;
@@ -99,24 +99,35 @@ main {
 .location {
 	margin-top: 0px;
 	background: rgba(227, 227, 227, .8);
+	padding-bottom: 30px;
+	height: 270px;
+	text-align: center;
+	h3 {
+		text-align: left;
+		padding-left: 15px;
+	}
+}
+
+.templates, .list-item {
+	display: none;
 }
 
 ul {
-	$width: 100%;
+	$width: 95%;
 	width: $width;
 	margin: 0 auto;
 	list-style: none;
-	text-align: center;
 	display: inline-block;
 	padding: 0;
+	box-sizing: border-box;
 	li {
 		background: rgba(0,0,0,.6);
 		color: white;
 		float: left;
 		border: 1px solid black;
-		$margin-r: 2%;
+		$margin-r: 1.5%;
 		margin-right: $margin-r;
-		width: ($width / $tiles) - ($margin-r);
+		width: (100% - ($margin-r * ($tiles - 1))) / $tiles;
 		&#last {
 			margin-right: 0;
 		}
@@ -132,4 +143,3 @@ ul {
 		}
 	}
 }
-/* Media Rules */

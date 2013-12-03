@@ -14,6 +14,11 @@
         <link rel="stylesheet" href="css/main.css">
         <link rel="stylesheet" type="text/css" href="css/styles.css">
         <script src="js/vendor/modernizr-2.6.2-respond-1.1.0.min.js"></script>
+
+        <script>window.jQuery || document.write('<script src="js/vendor/jquery-1.10.1.min.js"><\/script>')</script>
+        <script src="js/moods.js"></script>
+        <script src="js/main.js"></script>
+
     </head>
     <body>
         <!--[if lt IE 7]>
@@ -28,37 +33,25 @@
             <div class="location">
                 <h3>You are in Seattle! What moood are you in?</h3>
                 <ul class="tiles">
-                    <li>
-                        <div class="tile-4">Hungry</div>
-                    </li>
-                    <li>
-                        <div class="tile-4">Hungry</div>
-                    </li>
-                    <li>
-                        <div class="tile-4">Hungry</div>
-                    </li>
-                    <li id="last">
-                        <div class="tile-4">Hungry</div>
-                    </li>
                </ul>
             </div>
         </main>
 
+        <div class="templates">
+            <li class="list-item">
+                <div class="tile-4">template</div>
+            </li>
+        </div>
 
-        <script src="//ajax.googleapis.com/ajax/libs/jquery/1.10.1/jquery.min.js"></script>
-        <script>window.jQuery || document.write('<script src="js/vendor/jquery-1.10.1.min.js"><\/script>')</script>
 
-        <script src="js/main.js"></script>
+        <!-- <script src="//ajax.googleapis.com/ajax/libs/jquery/1.10.1/jquery.min.js"></script> -->
 
-        <script>
+
+        <!--<script>
             var _gaq=[['_setAccount','UA-XXXXX-X'],['_trackPageview']];
             (function(d,t){var g=d.createElement(t),s=d.getElementsByTagName(t)[0];
             g.src='//www.google-analytics.com/ga.js';
             s.parentNode.insertBefore(g,s)}(document,'script'));
-
-            $(function() {
-                
-            }); //onload
-        </script>
+        </script>-->
     </body>
 </html>
