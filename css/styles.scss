@@ -121,6 +121,7 @@ ul {
 	padding: 0;
 	box-sizing: border-box;
 	li {
+		display: inline-block;
 		background: rgba(0,0,0,.6);
 		color: white;
 		float: left;
