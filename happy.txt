@@ -1,0 +1,9 @@
+happy - healthy
+
+
+Gluten-Free (gluten_free)
+Live/Raw Food (raw_food)
+Salad (salad)
+Seafood (seafood)
+Vegan (vegan)
+Vegetarian (vegetarian)
