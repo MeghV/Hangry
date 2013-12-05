@@ -1,0 +1,21 @@
+Sad - Comfort food,
+
+
+
+American (New) (newamerican)
+American (Traditional) (tradamerican)
+Barbeque (bbq)
+Breakfast & Brunch (breakfast_brunch)
+Buffets (buffets)
+Burgers (burgers)
+Cafeteria (cafeteria)
+
+Cheesesteaks (cheesesteaks)
+Chicken Wings (chicken_wings)
+Comfort Food (comfortfood)
+Delis (delis)
+Hot Pot (hotpot)
+Sandwiches (sandwiches)
+Soul Food (soulfood)
+Soup (soup)
+Southern (southern)

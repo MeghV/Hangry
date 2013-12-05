@@ -1,0 +1,9 @@
+Angry - Spicy 
+
+Cajun/Creole (cajun)
+Tex-Mex (tex-mex)
+Food Court (food_court)
+Food Stands (foodstands)
+Fast Food (hotdogs)
+
+Fish & Chips (fishnchips)
