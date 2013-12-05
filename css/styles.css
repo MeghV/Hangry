@@ -89,3 +89,15 @@ ul {
       border: 1px solid red;
       cursor: pointer;
       background: rgba(0, 0, 0, 0.4); }
+
+.price-sort {
+  color: white;
+  font-weight: bold;
+  float: right;
+}
+
+.price-sort-slider {
+  line-height: .4em;
+  margin-left: 5px;
+  margin-top: 15px;
+}
