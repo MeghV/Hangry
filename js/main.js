@@ -24,6 +24,11 @@ $(function() {
 	tile.appendTo(".tiles");
 	tile.fadeIn(4000);
 
+	get_location();
+	$.get("http://ipinfo.io", function(response) {
+    	console.log(response.ip, response.city);
+    	$("#city").empty().hide().html(response.city).fadeIn('slow');
+	}, "jsonp");
 	// $.each(mood, function(index, value) {
 	// 	tile = $(".templates .list-item").clone();
 	// 	alert(this);
@@ -32,3 +37,18 @@ $(function() {
 	// 	$(".tiles").hide().append(tile).fadeIn();
 	// });         
 }); //onload
+
+function get_location() {
+	console.log("Getting location");
+	if (Modernizr.geolocation) {
+		navigator.geolocation.getCurrentPosition(alertCoords);
+	} else {
+		// no native support; maybe try a fallback?
+	}
+}
+
+function alertCoords(position) {
+	  var latitude = position.coords.latitude;
+  	var longitude = position.coords.longitude;
+  	alert(latitude + ", " + longitude);
+}
