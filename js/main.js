@@ -35,7 +35,18 @@ $(function() {
 	// 	var content = tile.find(".tile-4");
 	// 	content.html(this);
 	// 	$(".tiles").hide().append(tile).fadeIn();
-	// });         
+	// });  
+
+	//time to handle the map service
+	if (navigator && navigator.geolocation) {
+        updateMessage('I am now obtaining your current position...');
+
+        navigator.geolocation.getCurrentPosition(onGeoSuccess, onGeoError, 
+            {enableHighAccuracy: true});
+    }
+    else {
+        updateMessage("Sorry, your shit is BROKEN SUCKA!");
+    }
 }); //onload
 
 function get_location() {
@@ -51,4 +62,35 @@ function alertCoords(position) {
 	  var latitude = position.coords.latitude;
   	var longitude = position.coords.longitude;
   	alert(latitude + ", " + longitude);
+}
+
+
+function onGeoSuccess(position) {
+    var ll = new google.maps.LatLng(position.coords.latitude,
+        position.coords.longitude);
+
+    var mapOptions = {
+        center: ll,
+        zoom: 16,
+        mapTypeId: google.maps.MapTypeId.ROADMAP
+    }
+
+    var map = new google.maps.Map($('.map-container')[0], mapOptions);
+
+    var marker = new google.maps.Marker({
+        map: map,
+        position: ll,
+        title: 'You are here!'
+    });
+
+     updateMessage("You should go eat at");
+
+}
+
+function onGeoError(err) {
+    updateMessage("Sorry, your shit is BROKEN SUCKA!");
+}
+
+function updateMessage(msg) {
+    $('.map-message').html(msg);
 }
