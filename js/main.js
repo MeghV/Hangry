@@ -1,40 +1,64 @@
 $(function() {
-	var moodsArr = moods;
-	var tile;
-	var i;
-	for (i = 0; i < moodsArr.length - 1; i++) {
-		var mood = moodsArr[i];
-		tile = $(".templates > .list-item").clone();
-		// alert(mood);
-		console.log(mood);
-		var content = tile.find(".tile-4");
-		console.log(content.html());
-		content.html(mood);
-		// tile.hide();
-		tile.appendTo(".tiles");
-		// tile.fadeIn(4000);
-	}
-	var finalMood = moodsArr[moodsArr.length - 1];
-	tile = $(".templates .list-item").clone();
-	console.log(finalMood);
-	tile.attr("id", "last");
-	var content = tile.find(".tile-4");
-	content.html(finalMood);
-	// tile.hide();
-	tile.appendTo(".tiles");
+	populateTiles();
+	$('.price-sort-slider').slider({
+		min: 0,
+		max: 3,
+		step: 1,
+		animate: 'slow'
+	});
+	$('.price-sort-slider').slider('pips', {
+		rest: "label",
+		labels: ["$", "$$", "$$$", "$$$$"]
+	});
+
 	// tile.fadeIn(4000);
 	var geocoder;
 	var city;
 	get_location();
 }); //onload
 
+function populateTiles() {
+	var moodsArr = moods;
+	var tile;
+	var i;
+	var lastElement = moodsArr.length - 1;
+	for (i = 0; i < lastElement; i++) {
+		delay = 200 * i + 300;
+		var mood = moodsArr[i].mood;
+		var img = moodsArr[i].image;
+		tile = $(".templates .holder").clone();
+		console.log(mood);
+		tile.find("img").attr("src", img);
+		tile.find(".moodName").html(mood);
+		tile.hide().appendTo($(".tiles .list-item").eq(i)).delay(delay).fadeIn(2500);
+	}
+	delay = 200 * lastElement + 300;
+	var finalMood = moodsArr[lastElement].mood;
+	var finalImg = moodsArr[lastElement].image;
+	tile = $(".templates .holder").clone();
+	console.log(finalMood);
+	tile.find("img").attr("src", finalImg);
+	tile.find(".moodName").html(finalMood);
+	tile.hide().appendTo($(".tiles .list-item").eq(lastElement)).delay(delay).fadeIn(2500);
+}
+
 function get_location() {
 	console.log("Getting location");
 	if (Modernizr.geolocation) {
 		navigator.geolocation.getCurrentPosition(successFunction);
 	} else {
-		// no native support; maybe try a fallback?
+		geoFallback();	
 	}
+}
+
+// uses ipinfo.io to find their city based on their ip;
+// serves as fallback in case geolocation does not work,
+// not as reliable as geolocation
+function geoFallback() {
+	$.get("http://ipinfo.io", function(response) {
+		console.log(response.city, response.country);
+		$("#city").hide().html(city).fadeIn();
+	}, "jsonp");
 }
 
 function successFunction(position) {
@@ -69,10 +93,7 @@ function codeLatLng(lat, lng) {
 					}
 				}
 			} else {
-				$.get("http://ipinfo.io", function(response) {
-					console.log(response.city, response.country);
-					$("#city").hide().html(city).fadeIn();
-				}, "jsonp");
+				geoFallback();
 			}
 		} else {
 			alert("Geocoder failed due to: " + status);

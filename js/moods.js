@@ -1,5 +1,15 @@
-// Mood object
-
 {
-	var moods = ["Angry", "Happy", "Sad", "Excited"];
+	var moods =  [{
+		"mood": "Angry",
+		"image": "img/angry.png"
+	}, {
+		"mood": "Happy",
+		"image": "img/happy.png"
+	}, {
+		"mood": "Sad",
+		"image": "img/sad.png"
+	}, {
+		"mood": "Baked",
+		"image": "img/baked.png"
+	}]
 }

@@ -47,6 +47,19 @@ main {
   .logo h1 {
     font-size: 3.5em; }
 
+.holder {
+  padding-bottom: 45px;
+  padding-top: 25px;
+  box-sizing: border-box;
+  margin: 10px;
+  height: 100%;
+}
+
+.moodName {
+  margin-top: 10px;
+  text-align: center;
+}
+
 .location {
   margin-top: 0px;
   background: rgba(227, 227, 227, 0.8);
@@ -60,6 +73,7 @@ main {
 .templates {
   display: none; }
 
+
 ul {
   width: 95%;
   margin: 0 auto;
@@ -68,6 +82,7 @@ ul {
   padding: 0;
   box-sizing: border-box; }
   ul li {
+    padding-bottom: 25px;
     display: inline-block;
     background: rgba(0, 0, 0, 0.6);
     color: white;
@@ -77,7 +92,6 @@ ul {
     width: 23.875%;
     box-sizing: border-box;
     height: 200px;
-    line-height: 200px;
     -webkit-transition: all 0.5s ease;
     -moz-transition: all 0.5s ease;
     -o-transition: all 0.5s ease;
@@ -97,7 +111,10 @@ ul {
 }
 
 .price-sort-slider {
-  line-height: .4em;
-  margin-left: 5px;
-  margin-top: 15px;
+
+  width: 80%;
+  margin: 0 auto;
+  color: red;
+
+
 }
