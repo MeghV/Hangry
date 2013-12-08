@@ -1,5 +1,4 @@
 @import url(grid.css);
-/* Mixins */
 /* General Rules */
 .bg {
   background-image: url("../img/asian.jpg");
@@ -38,6 +37,16 @@ main {
     float: left;
     clear: both; }
 
+.holder {
+  padding-top: 25px;
+  padding-bottom: 45px;
+  box-sizing: border-box;
+  margin: 10px;
+  height: 100%; }
+  .holder .moodName {
+    margin-top: 10px;
+    text-align: center; }
+
 .logo {
   background: rgba(0, 20, 23, 0.8);
   color: white;
@@ -46,19 +55,6 @@ main {
   margin-bottom: 0px; }
   .logo h1 {
     font-size: 3.5em; }
-
-.holder {
-  padding-bottom: 45px;
-  padding-top: 25px;
-  box-sizing: border-box;
-  margin: 10px;
-  height: 100%;
-}
-
-.moodName {
-  margin-top: 10px;
-  text-align: center;
-}
 
 .location {
   margin-top: 0px;
@@ -70,9 +66,12 @@ main {
     text-align: left;
     padding-left: 15px; }
 
+.price-sort-slider {
+  margin: 0 auto;
+  width: 80%; }
+
 .templates {
   display: none; }
-
 
 ul {
   width: 95%;
@@ -82,7 +81,6 @@ ul {
   padding: 0;
   box-sizing: border-box; }
   ul li {
-    padding-bottom: 25px;
     display: inline-block;
     background: rgba(0, 0, 0, 0.6);
     color: white;
@@ -103,18 +101,3 @@ ul {
       border: 1px solid red;
       cursor: pointer;
       background: rgba(0, 0, 0, 0.4); }
-
-.price-sort {
-  color: white;
-  font-weight: bold;
-  float: right;
-}
-
-.price-sort-slider {
-
-  width: 80%;
-  margin: 0 auto;
-  color: red;
-
-
-}
