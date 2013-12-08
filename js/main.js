@@ -10,9 +10,9 @@ $(function() {
 		var content = tile.find(".tile-4");
 		console.log(content.html());
 		content.html(mood);
-		tile.hide();
+		// tile.hide();
 		tile.appendTo(".tiles");
-		tile.fadeIn(4000);
+		// tile.fadeIn(4000);
 	}
 	var finalMood = moodsArr[moodsArr.length - 1];
 	tile = $(".templates .list-item").clone();
@@ -20,15 +20,15 @@ $(function() {
 	tile.attr("id", "last");
 	var content = tile.find(".tile-4");
 	content.html(finalMood);
-	tile.hide();
+	// tile.hide();
 	tile.appendTo(".tiles");
-	tile.fadeIn(4000);
-
+	// tile.fadeIn(4000);
+	var city;
 	get_location();
-	$.get("http://ipinfo.io", function(response) {
-    	console.log(response.ip, response.city);
-    	$("#city").empty().hide().html(response.city).fadeIn('slow');
-	}, "jsonp");
+	// $.get("http://ipinfo.io", function(response) {
+ //    	console.log(response.ip, response.city);
+ //    	$("#city").empty().hide().html(response.city).fadeIn('slow');
+	// }, "jsonp");
 	// $.each(mood, function(index, value) {
 	// 	tile = $(".templates .list-item").clone();
 	// 	alert(this);
@@ -59,9 +59,29 @@ function get_location() {
 }
 
 function alertCoords(position) {
-	  var latitude = position.coords.latitude;
+	var latitude = position.coords.latitude;
   	var longitude = position.coords.longitude;
   	alert(latitude + ", " + longitude);
+  	geocoder = new google.maps.Geocoder();
+  	var latlng = new google.maps.LatLng(latitude, longitude);
+  	console.log(latlng);
+  	geocoder.geocode({location: latlng},
+  		function(results, status) {
+  			if(status === google.maps.GeocoderStatus.OK) {
+  				if(results[1]) {
+  					alert(results[0].formatted_address);
+  					for(int i = 0; i < results[0].address_components.length; i++) {
+  						for(int j = 0; j < results[0].address_components[i].types.length; j++) {
+  							if(results[0].address_components[i].types[j] === "administrative_area_level_3") {
+  								city = results[0].address_components[i].long_name;
+  								break;
+  							}
+  						}
+  					}
+  				}
+  				alert("City is:" + city);
+  			}
+  		});
 }
 
 

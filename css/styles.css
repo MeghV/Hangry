@@ -57,7 +57,7 @@ main {
     text-align: left;
     padding-left: 15px; }
 
-.templates, .list-item {
+.templates {
   display: none; }
 
 ul {
