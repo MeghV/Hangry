@@ -1,5 +1,5 @@
 $(function() {
-	populateTiles();
+	createTiles(); // creates and fades in tiles
 	$('.price-sort-slider').slider({
 		min: 0,
 		max: 3,
@@ -17,29 +17,40 @@ $(function() {
 	get_location();
 }); //onload
 
-function populateTiles() {
+// creates the elements that will be used in the tiles
+// based on the moods object - they can be dynamically
+// altered
+function createTiles() {
 	var moodsArr = moods;
-	var tile;
 	var i;
 	var lastElement = moodsArr.length - 1;
+	var delay;
 	for (i = 0; i < lastElement; i++) {
 		delay = 200 * i + 300;
-		var mood = moodsArr[i].mood;
-		var img = moodsArr[i].image;
-		tile = $(".templates .holder").clone();
-		console.log(mood);
-		tile.find("img").attr("src", img);
-		tile.find(".moodName").html(mood);
-		tile.hide().appendTo($(".tiles .list-item").eq(i)).delay(delay).fadeIn(2500);
+		populateTiles(delay, moodsArr[i].mood, moodsArr[i].image, i)
 	}
 	delay = 200 * lastElement + 300;
-	var finalMood = moodsArr[lastElement].mood;
-	var finalImg = moodsArr[lastElement].image;
-	tile = $(".templates .holder").clone();
-	console.log(finalMood);
-	tile.find("img").attr("src", finalImg);
-	tile.find(".moodName").html(finalMood);
-	tile.hide().appendTo($(".tiles .list-item").eq(lastElement)).delay(delay).fadeIn(2500);
+	populateTiles(delay, moodsArr[lastElement].mood, moodsArr[lastElement].image, lastElement);
+}
+
+// populates and appends elements within the tile, 
+// including the mood and its corresponding image;
+//    delay  - delay between consecutive tile fade-ins
+//    mood   - specified mood
+//    image  - specified image
+//    number - nth-child of tiles list under which tile will be appended
+function populateTiles(delay, mood, image, number) {
+	var mood = mood;
+	var img = image;
+	var tile = $(".templates .holder").clone();
+	console.log(mood);
+	tile.find("img").attr({
+		"src": img,
+		"title": "You're feelin' totally " + mood,
+		"alt": mood + " face"
+	});
+	tile.find(".moodName").html(mood);
+	tile.hide().appendTo($(".tiles .list-item").eq(number)).delay(delay).fadeIn(2500);
 }
 
 function get_location() {
@@ -47,7 +58,7 @@ function get_location() {
 	if (Modernizr.geolocation) {
 		navigator.geolocation.getCurrentPosition(successFunction);
 	} else {
-		geoFallback();	
+		geoFallback();
 	}
 }
 
