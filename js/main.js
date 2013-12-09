@@ -1,5 +1,4 @@
 $(function() {
-	createTiles(); // creates and fades in tiles
 	sliderStyle(); // initializes slider
 	var lat;
 	var lng;
@@ -93,9 +92,10 @@ function successFunction(position) {
 	lng = position.coords.longitude;
 	console.log("Getting location");
 	latlng = new google.maps.LatLng(lat, lng);
-	alert(latlng);
 	codeLatLng(latlng);
-	alert("Ready to find!");
+	$("ul").slideDown();
+	createTiles(); // creates and fades in tiles
+	console.log("Ready to find!");
 }
 
 // uses ipinfo.io to find their city based on their ip;
