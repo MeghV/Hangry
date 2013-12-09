@@ -1,4 +1,11 @@
-function yelpTest(categories, image, origin) {
+var i = 0;
+var markers = [];
+var businesses;
+var image;
+var directionsDisplay;
+
+function yelpTest(categories, face, origin) {
+  image = face;
   var auth = {
     // Update with your auth tokens.
     consumerKey: "_Lo_S_1nCTJrPZvdk_z5ag",
@@ -53,16 +60,77 @@ function yelpTest(categories, image, origin) {
     'dataType': 'jsonp',
     'jsonpCallback': 'cb',
     'success': function(data, textStats, XMLHttpRequest) {
-      console.log(data);
-      alert(data.businesses[0].id);
-      alert("The image that will be used is " + image);
-      geocode(data.businesses[0], image, origin);
-      var output = prettyPrint(data);
+      businesses = data.businesses;
+      randomize();
+      console.log(businesses);
+      geocode(data.businesses[0], image);
+      $(".myButton").fadeIn().click(function() {
+        nextPlace();
+      });
     }
   });
 }
 
-function geocode(place, image, origin) {
+function nextPlace() {
+  i++;
+  if(i === businesses.length) {
+    i = 0;
+  }
+  var place = businesses[i];
+  geocode(place);
+}
+
+function geocode(place) {
+  for (i in markers) {
+    markers[i].setMap(null);
+    directionsDisplay.setMap(null);
+  }
+  var loc = place.location;
+  var address = loc.address[0] + ", " + loc.city;
+  geocoder.geocode({
+      'address': address
+    },
+    function(results, status) {
+      if (status == google.maps.GeocoderStatus.OK) {
+        var dest = results[0].geometry.location;
+        alert("Geocoder OK " + loc.address[0]);
+        addMarker(dest);
+        updateMessage("You should go eat at " + place.name);
+      }
+    }
+  );
+}
+
+function addMarker(destination) {
+  directionsDisplay = new google.maps.DirectionsRenderer();
+  directionsDisplay.setMap(map);
+  var directionsService = new google.maps.DirectionsService();
+  var img = {
+    url: image,
+    scaledSize: new google.maps.Size(40, 40, "px", "px")
+  };
+  var marker = new google.maps.Marker({
+    map: map,
+    position: destination,
+    icon: img,
+    animation: google.maps.Animation.DROP
+  });
+  marker.setAnimation(google.maps.Animation.BOUNCE);
+
+  var request = {
+    origin: latlng,
+    destination: destination,
+    travelMode: google.maps.TravelMode.DRIVING
+  };
+  directionsService.route(request, function(result, status) {
+    if (status == google.maps.DirectionsStatus.OK) {
+      directionsDisplay.setDirections(result);
+    }
+  });
+  markers.push(marker);
+}
+
+function geocoderrr(place, image, origin) {
   var directionsDisplay = new google.maps.DirectionsRenderer();
   directionsDisplay.setMap(map);
   var directionsService = new google.maps.DirectionsService();
@@ -97,4 +165,10 @@ function geocode(place, image, origin) {
       }
     }
   );
+}
+
+function randomize() {
+  businesses.sort(function() {
+    return 0.5 - Math.random()
+  });
 }

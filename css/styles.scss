@@ -46,6 +46,14 @@ $tiles: 4;
     transition: $transition;
 }
 
+@mixin hoverstyle {
+	@include transitions(all .5s ease);
+	&:hover {
+		border: 1px solid red;			
+		cursor: pointer;
+		background: rgba(0,0,0,.4);
+	}
+}
 /* General Rules */
 
 .bg {
@@ -121,6 +129,31 @@ main {
 	}
 }
 
+.myButton {
+	display: none;
+	@include padding-tb(5px,5px);
+	float: right;
+	margin: 1em 0;
+	font-size: 1.17em;
+	margin-right: 15px;
+	cursor: pointer;
+	background: rgba(0,0,0,.6);		
+	border: 1px solid black;
+	box-sizing: border-box;
+	color: white;
+	@include hoverstyle;
+	&:active {
+		margin-bottom: -1;
+	}
+	&:focus {
+		outline: 0;
+	}
+}
+
+.message {
+	float: left;
+	display: inline-block;
+}
 .map-container {
 	margin-top: 0px;
 	padding-bottom: 30px;
@@ -160,11 +193,6 @@ ul {
 		box-sizing: border-box;
 		$height: 200px;
 		height: $height;
-		@include transitions(all .5s ease);
-		&:hover {
-			border: 1px solid red;
-			cursor: pointer;
-			background: rgba(0,0,0,.4);
-		}
+		@include hoverstyle;
 	}
 }
