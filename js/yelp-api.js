@@ -1,4 +1,4 @@
-function yelpTest(categories) {
+function yelpTest(categories, image, origin) {
   var auth = {
     // Update with your auth tokens.
     consumerKey: "_Lo_S_1nCTJrPZvdk_z5ag",
@@ -15,10 +15,7 @@ function yelpTest(categories) {
   var terms = 'food';
   var location = lat + "," + lng;
   var radius = 10000;
-  var sort = 1;
-  alert("Lat is " + lat);
-  alert("Lng is " + lng);
-  alert("Cats are " + categories);
+  var sort = $('.price-sort-slider').slider("value");
   var accessor = {
     consumerSecret: auth.consumerSecret,
     tokenSecret: auth.accessTokenSecret
@@ -58,24 +55,44 @@ function yelpTest(categories) {
     'success': function(data, textStats, XMLHttpRequest) {
       console.log(data);
       alert(data.businesses[0].id);
-      geocode(data.businesses[0]);
+      alert("The image that will be used is " + image);
+      geocode(data.businesses[0], image, origin);
       var output = prettyPrint(data);
     }
   });
 }
 
-function geocode(place) {
+function geocode(place, image, origin) {
+  var directionsDisplay = new google.maps.DirectionsRenderer();
+  directionsDisplay.setMap(map);
+  var directionsService = new google.maps.DirectionsService();
   geocoder.geocode({
       'address': place.location.address[0]
     },
     function(results, status) {
       if (status == google.maps.GeocoderStatus.OK) {
         alert("Geocoder OK " + place.location.address[0]);
-        map.setCenter(results[0].geometry.location);
+        var request = {
+          origin: latlng,
+          destination: results[0].geometry.location,
+          travelMode: google.maps.TravelMode.DRIVING
+        };
+        directionsService.route(request, function(result, status) {
+          if (status == google.maps.DirectionsStatus.OK) {
+            directionsDisplay.setDirections(result);
+          }
+        });
+        var img = {
+          url: image,
+          scaledSize: new google.maps.Size(40, 40, "px", "px")
+        };
         var marker = new google.maps.Marker({
           map: map,
-          position: results[0].geometry.location
+          position: results[0].geometry.location,
+          icon: img,
+          animation: google.maps.Animation.DROP
         });
+        marker.setAnimation(google.maps.Animation.BOUNCE);
         updateMessage("You should go eat at " + place.name);
       }
     }
