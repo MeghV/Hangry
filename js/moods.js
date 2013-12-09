@@ -1,15 +1,23 @@
 {
 	var moods =  [{
 		"mood": "Angry",
-		"image": "img/angry.png"
+		"type": "spicy",
+		"image": "img/angry.png",
+		"categories": "cajun,tex-mex,food_court,foodstands,hotdogs,fishnchips"
 	}, {
 		"mood": "Happy",
-		"image": "img/happy.png"
+		"type": "healthy",
+		"image": "img/happy.png",
+		"categories": "gluten_free,raw_food,salad,seafood,vegan,vegetarian"
 	}, {
 		"mood": "Sad",
-		"image": "img/sad.png"
+		"type": "healthy",
+		"image": "img/sad.png",
+		"categories": "newamerican,tradamerican,bbq,breakfast_brunch,buffets,burgers,cafeteria,cheesesteaks,chicken_wings,comfortfood,delis,hotpot,sandwiches,soulfood,soup,southern"
 	}, {
 		"mood": "Baked",
-		"image": "img/baked.png"
+		"type": "awesome",
+		"image": "img/baked.png",
+		"categories": "cafes,creperies,burgers,comfortfood,hotdog,pizza"
 	}]
 }

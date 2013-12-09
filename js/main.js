@@ -1,10 +1,13 @@
 $(function() {
 	createTiles(); // creates and fades in tiles
 	sliderStyle(); // initializes slider
-
 	// tile.fadeIn(4000);
+	var lat;
+	var lng;
 	var geocoder;
 	var city;
+	var service;
+	var map;
 	get_location();
 }); //onload
 
@@ -18,10 +21,10 @@ function createTiles() {
 	var delay;
 	for (i = 0; i < lastElement; i++) {
 		delay = 200 * i + 300;
-		populateTiles(delay, moodsArr[i].mood, moodsArr[i].image, i)
+		populateTiles(delay, moodsArr[i], i)
 	}
 	delay = 200 * lastElement + 300;
-	populateTiles(delay, moodsArr[lastElement].mood, moodsArr[lastElement].image, lastElement);
+	populateTiles(delay, moodsArr[lastElement], lastElement);
 }
 
 // populates and appends elements within the tile, 
@@ -30,9 +33,10 @@ function createTiles() {
 //    mood   - specified mood
 //    image  - specified image
 //    number - nth-child of tiles list under which tile will be appended
-function populateTiles(delay, mood, image, number) {
-	var mood = mood;
-	var img = image;
+function populateTiles(delay, curr, number) {
+	var mood = curr.mood;
+	var img = curr.image;
+	var cats = curr.categories;
 	var tile = $(".templates .holder").clone();
 	console.log(mood);
 	tile.find("img").attr({
@@ -41,7 +45,9 @@ function populateTiles(delay, mood, image, number) {
 		"alt": mood + " face"
 	});
 	tile.find(".moodName").html(mood);
-	tile.hide().appendTo($(".tiles .list-item").eq(number)).delay(delay).fadeIn(2500);
+	var listItem = $(".tiles .list-item").eq(number);
+	listItem.attr("data-categories", cats)
+	tile.hide().appendTo(listItem).delay(delay).fadeIn(2500);
 }
 
 // creates and styles the price slider 
@@ -68,10 +74,10 @@ function get_location() {
 }
 
 function handle_error(err) {
-  if (err.code == 1) {
-  	console.log("User said no!");
-  	geoFallback();
-  }
+	if (err.code == 1) {
+		console.log("User said no!");
+		geoFallback();
+	}
 }
 // uses ipinfo.io to find their city based on their ip;
 // serves as fallback in case geolocation does not work,
@@ -85,11 +91,15 @@ function geoFallback() {
 }
 
 function successFunction(position) {
+	lat = position.coords.latitude;
+	lng = position.coords.longitude;
 	console.log("Getting location");
-	var latlng = new google.maps.LatLng(position.coords.latitude, position.coords.longitude);
+	var latlng = new google.maps.LatLng(lat, lng);
 	alert(latlng);
 	codeLatLng(latlng);
 	onGeoSuccess(latlng);
+	var chosen = $("#last").attr("data-categories");
+    yelpTest(chosen);
 }
 
 function codeLatLng(latlng) {
@@ -132,7 +142,7 @@ function onGeoSuccess(ll) {
 		mapTypeId: google.maps.MapTypeId.ROADMAP
 	}
 
-	var map = new google.maps.Map($('.map-container')[0], mapOptions);
+	map = new google.maps.Map($('.map-container')[0], mapOptions);
 
 	var marker = new google.maps.Marker({
 		map: map,
@@ -140,8 +150,30 @@ function onGeoSuccess(ll) {
 		title: 'You are here!'
 	});
 
-	updateMessage("You should go eat at");
+	var request = {
+		location: ll,
+		radius: '10000',
+		types: ['stores']
+	};
 
+	service = new google.maps.places.PlacesService(map);
+	service.nearbySearch(request, callback);
+
+}
+
+function callback(results, status) {
+  var stores = [];
+  console.log("Made the callback");
+  if (status == google.maps.places.PlacesServiceStatus.OK) {
+    console.log("Places Service Status ok");
+    for (var i = 0; i < results.length; i++) {
+      var place = results[i];
+      stores.push(place.name);
+    }
+    console.log(stores.toString());
+  } else {
+  	console.log("Places Service Status not OK");
+  }
 }
 
 function onGeoError(err) {
