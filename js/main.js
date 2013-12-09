@@ -1,15 +1,6 @@
 $(function() {
 	createTiles(); // creates and fades in tiles
-	$('.price-sort-slider').slider({
-		min: 0,
-		max: 3,
-		step: 1,
-		animate: 'slow'
-	});
-	$('.price-sort-slider').slider('pips', {
-		rest: "label",
-		labels: ["$", "$$", "$$$", "$$$$"]
-	});
+	sliderStyle(); // initializes slider
 
 	// tile.fadeIn(4000);
 	var geocoder;
@@ -53,34 +44,55 @@ function populateTiles(delay, mood, image, number) {
 	tile.hide().appendTo($(".tiles .list-item").eq(number)).delay(delay).fadeIn(2500);
 }
 
+// creates and styles the price slider 
+// using jQuery UI slider pips plugn
+function sliderStyle() {
+	$('.price-sort-slider').slider({
+		min: 0,
+		max: 3,
+		step: 1,
+		animate: 'slow'
+	});
+	$('.price-sort-slider').slider('pips', {
+		rest: "label",
+		labels: ["$", "$$", "$$$", "$$$$"]
+	});
+}
+
 function get_location() {
-	console.log("Getting location");
 	if (Modernizr.geolocation) {
-		navigator.geolocation.getCurrentPosition(successFunction);
+		navigator.geolocation.getCurrentPosition(successFunction, handle_error);
 	} else {
 		geoFallback();
 	}
 }
 
+function handle_error(err) {
+  if (err.code == 1) {
+  	console.log("User said no!");
+  	geoFallback();
+  }
+}
 // uses ipinfo.io to find their city based on their ip;
 // serves as fallback in case geolocation does not work,
 // not as reliable as geolocation
 function geoFallback() {
+	console.log("geoFallback called");
 	$.get("http://ipinfo.io", function(response) {
-		console.log(response.city, response.country);
-		$("#city").hide().html(city).fadeIn();
+		console.log(response.city, response.region);
+		$("#city").hide().html(response.city).fadeIn();
 	}, "jsonp");
 }
 
 function successFunction(position) {
-	var lat = position.coords.latitude;
-	var lng = position.coords.longitude;
-	alert(lat + ", " + lng);
-	codeLatLng(lat, lng);
+	console.log("Getting location");
+	var latlng = new google.maps.LatLng(position.coords.latitude, position.coords.longitude);
+	alert(latlng);
+	codeLatLng(latlng);
+	onGeoSuccess(latlng);
 }
 
-function codeLatLng(lat, lng) {
-	var latlng = new google.maps.LatLng(lat, lng);
+function codeLatLng(latlng) {
 	geocoder = new google.maps.Geocoder();
 	geocoder.geocode({
 		'latLng': latlng
@@ -112,10 +124,8 @@ function codeLatLng(lat, lng) {
 	});
 }
 
-function onGeoSuccess(position) {
-	var ll = new google.maps.LatLng(position.coords.latitude,
-		position.coords.longitude);
-
+function onGeoSuccess(ll) {
+	$(".tiles, .price-sort-slider").fadeOut();
 	var mapOptions = {
 		center: ll,
 		zoom: 16,
@@ -139,5 +149,5 @@ function onGeoError(err) {
 }
 
 function updateMessage(msg) {
-	$('.map-message').html(msg);
+	$('.message').html(msg);
 }
