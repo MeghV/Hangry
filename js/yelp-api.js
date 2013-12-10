@@ -80,11 +80,11 @@ function yelpTest(categories, face) {
 // increments the array and geocodes next business 
 function nextPlace() {
   i++;
-  if (i === businesses.length) {
-    i = 0;
-  }
   var place = businesses[i];
   geocode(place);
+  if (i === businesses.length - 1) {
+    i = 0;
+  }
 }
 
 // based on the current place where i is in the businesses array,
