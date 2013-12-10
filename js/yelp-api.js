@@ -73,7 +73,7 @@ function yelpTest(categories, face, origin) {
 
 function nextPlace() {
   i++;
-  if(i === businesses.length) {
+  if (i === businesses.length) {
     i = 0;
   }
   var place = businesses[i];
@@ -105,18 +105,6 @@ function addMarker(destination) {
   directionsDisplay = new google.maps.DirectionsRenderer();
   directionsDisplay.setMap(map);
   var directionsService = new google.maps.DirectionsService();
-  var img = {
-    url: image,
-    scaledSize: new google.maps.Size(40, 40, "px", "px")
-  };
-  var marker = new google.maps.Marker({
-    map: map,
-    position: destination,
-    icon: img,
-    animation: google.maps.Animation.DROP
-  });
-  marker.setAnimation(google.maps.Animation.BOUNCE);
-
   var request = {
     origin: latlng,
     destination: destination,
@@ -127,44 +115,17 @@ function addMarker(destination) {
       directionsDisplay.setDirections(result);
     }
   });
+  var img = {
+    url: image,
+    scaledSize: new google.maps.Size(40, 40, "px", "px")
+  };
+  var marker = new google.maps.Marker({
+    map: map,
+    position: destination,
+    icon: img
+  });
+  marker.setAnimation(google.maps.Animation.BOUNCE);
   markers.push(marker);
-}
-
-function geocoderrr(place, image, origin) {
-  var directionsDisplay = new google.maps.DirectionsRenderer();
-  directionsDisplay.setMap(map);
-  var directionsService = new google.maps.DirectionsService();
-  geocoder.geocode({
-      'address': place.location.address[0]
-    },
-    function(results, status) {
-      if (status == google.maps.GeocoderStatus.OK) {
-        alert("Geocoder OK " + place.location.address[0]);
-        var request = {
-          origin: latlng,
-          destination: results[0].geometry.location,
-          travelMode: google.maps.TravelMode.DRIVING
-        };
-        directionsService.route(request, function(result, status) {
-          if (status == google.maps.DirectionsStatus.OK) {
-            directionsDisplay.setDirections(result);
-          }
-        });
-        var img = {
-          url: image,
-          scaledSize: new google.maps.Size(40, 40, "px", "px")
-        };
-        var marker = new google.maps.Marker({
-          map: map,
-          position: results[0].geometry.location,
-          icon: img,
-          animation: google.maps.Animation.DROP
-        });
-        marker.setAnimation(google.maps.Animation.BOUNCE);
-        updateMessage("You should go eat at " + place.name);
-      }
-    }
-  );
 }
 
 function randomize() {
