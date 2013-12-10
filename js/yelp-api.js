@@ -93,7 +93,6 @@ function geocode(place) {
     function(results, status) {
       if (status == google.maps.GeocoderStatus.OK) {
         var dest = results[0].geometry.location;
-        alert("Geocoder OK " + loc.address[0]);
         addMarker(dest);
         updateMessage("You should go eat at " + place.name);
       }
