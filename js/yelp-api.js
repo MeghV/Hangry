@@ -1,5 +1,6 @@
 var i = 0;
 var markers = [];
+var infowindows = [];
 var businesses;
 var image;
 var directionsDisplay;
@@ -63,8 +64,9 @@ function yelpTest(categories, face, origin) {
       businesses = data.businesses;
       randomize();
       console.log(businesses);
-      geocode(data.businesses[0], image);
+      geocode(data.businesses[i], image);
       $(".myButton").fadeIn().click(function() {
+        console.log("Before: " + i);
         nextPlace();
       });
     }
@@ -73,6 +75,7 @@ function yelpTest(categories, face, origin) {
 
 function nextPlace() {
   i++;
+  console.log(i);
   if (i === businesses.length) {
     i = 0;
   }
@@ -85,6 +88,8 @@ function geocode(place) {
     markers[i].setMap(null);
     directionsDisplay.setMap(null);
   }
+  infowindows = [];
+
   var loc = place.location;
   var address = loc.address[0] + ", " + loc.city;
   geocoder.geocode({
@@ -94,14 +99,40 @@ function geocode(place) {
       if (status == google.maps.GeocoderStatus.OK) {
         var dest = results[0].geometry.location;
         alert("Geocoder OK " + loc.address[0]);
-        addMarker(dest);
-        updateMessage("You should go eat at " + place.name);
+        addMarker(dest, place);
+        changeToMiles(place);
+        var distanceText;
+        if (place.distance > 1) {
+          distanceText = ", it's only like " + place.distance + " miles away.";
+        } else if (place.distance < 1) {
+          distanceText = ", it's less than 1 mile away.";
+        } else {
+          distanceText = ", it's like " + place.distance + " mile away!";
+        }
+        updateMessage("You should go eat at " + "<a class='directions' href='" + place.url + "'>" + place.name + "</a>" + distanceText);
       }
     }
   );
 }
 
-function addMarker(destination) {
+// converts the distance to the place from meters
+// to miles and then uses Math.floor/Math.ceil
+// to make it a whole number depending on if it's
+// <= 0.5 
+function changeToMiles(place) {
+  var distance = place.distance;
+  distance = distance / 1609.34;
+  var integer = Math.floor(distance);
+  var decimal = distance - integer;
+  if (decimal <= 0.5) {
+    distance = Math.floor(distance);
+  } else {
+    distance = Math.ceil(distance);
+  }
+  place.distance = distance;
+}
+
+function addMarker(destination, place) {
   directionsDisplay = new google.maps.DirectionsRenderer();
   directionsDisplay.setMap(map);
   var directionsService = new google.maps.DirectionsService();
@@ -124,10 +155,28 @@ function addMarker(destination) {
     position: destination,
     icon: img
   });
+
   marker.setAnimation(google.maps.Animation.BOUNCE);
   markers.push(marker);
+  var nm = place.name;
+  console.log(nm);
+  var stars = place.rating_img_url;
+  var contentString = "<em>" + nm + "</em> is rated <img src=" + stars + "> on Yelp!";
+  var infowindow = new google.maps.InfoWindow({
+    content: contentString,
+    maxWidth: 500
+  });
+  google.maps.event.addListener(marker, 'mouseover', function() {
+    infowindow.open(map,marker);
+  });
+  google.maps.event.addListener(marker, 'mouseout', function() {
+    infowindow.close();
+  });
+  infowindows.push(infowindow);
 }
 
+// randomizes the array of returned businesses
+// so there's a different result each time
 function randomize() {
   businesses.sort(function() {
     return 0.5 - Math.random()
