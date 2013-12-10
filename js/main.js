@@ -19,7 +19,7 @@ function hoverFood() {
 		var cats = $(this).attr("data-pretty");
 		var string = "We'll look for " + types + " foods like " + cats;
 		$(".type_foods").html(string);
-		$(".type_foods").hide().appendTo($(".location")).fadeIn();
+		$(".type_foods").hide().appendTo($(".location")).fadeIn(500);
 	}, function() {
 		$(".type_foods").fadeOut();
 	});
