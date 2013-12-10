@@ -22,8 +22,8 @@
 		"categories": "newamerican,tradamerican,bbq,breakfast_brunch,buffets,burgers,cafeteria,cheesesteaks,chicken_wings,comfortfood,delis,hotpot,sandwiches,soulfood,soup,southern"
 	}
 	, {
-		"mood": "Baked",
-		"type": "awesome and chill",
+		"mood": "Chill",
+		"type": "nice and chill",
 		"image": "img/baked.png",
 		"map_img": "img/dest_baked_fill.png",
 		"pretty_cats": "Crepes, Fast Food, Burgers, Pizza, Cafes",

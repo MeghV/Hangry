@@ -182,7 +182,7 @@ main {
 
 .directions {
 	color: rgba(0, 0, 0, 0.6);
-	@include transitions(all .5s ease);
+	@include transitions(all .2s ease);
 	&:hover {
 		color: red;			
 	}

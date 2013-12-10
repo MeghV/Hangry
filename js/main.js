@@ -1,18 +1,18 @@
 $(function() {
-	sliderStyle(); // initializes slider
-	var lat;
-	var lng;
-	var latlng;
-	var geocoder;
-	var city;
-	var service;
-	var map;
+	var lat; // latitude of user
+	var lng; // longitude of user 
+	var latlng; // latitude/longitude object
+	var geocoder; // Google geocoder
+	var city; // name of user's city
+	var map; // reference to map
 	get_location(); // gets users location
-	hoverFood();
-	clickTile();
-	// tile.fadeIn(4000);
+	hoverFood(); // hover effect
+	clickTile(); // tile click
 }); //onload
 
+// presents a message about what types of foods
+// each mood corresponds to based on data-attributes
+// that were set when moods were initialized
 function hoverFood() {
 	$(".list-item").hover(function() {
 		var types = $(this).attr("data-type");
@@ -24,12 +24,15 @@ function hoverFood() {
 		$(".type_foods").fadeOut();
 	});
 }
+
+// presents a message about what types of foods
+// each mood corresponds to based on data-attributes
+// that were set when moods were initialized
 function clickTile() {
 	$(".list-item").click(function() {
 		var cats = $(this).attr("data-categories");
 		var img = $(this).attr("data-icon");
-		console.log(cats);
-		console.log(img);
+		console.log("looking for " + cats);
 		afterSelection(cats, img);
 	});
 }
@@ -41,22 +44,17 @@ function createTiles() {
 	var moodsArr = moods;
 	var i;
 	var lastElement = moodsArr.length - 1;
-	var delay;
 	for (i = 0; i < lastElement; i++) {
-		delay = 200 * i + 300;
-		populateTiles(delay, moodsArr[i], i)
+		populateTiles(moodsArr[i], i)
 	}
-	delay = 200 * lastElement + 300;
-	populateTiles(delay, moodsArr[lastElement], lastElement);
+	populateTiles(moodsArr[lastElement], lastElement);
 }
 
 // populates and appends elements within the tile, 
 // including the mood and its corresponding image;
 //    delay  - delay between consecutive tile fade-ins
-//    mood   - specified mood
-//    image  - specified image
 //    number - nth-child of tiles list under which tile will be appended
-function populateTiles(delay, curr, number) {
+function populateTiles(curr, number) {
 	var mood = curr.mood;
 	var img = curr.image;
 	var cats = curr.categories;
@@ -79,26 +77,11 @@ function populateTiles(delay, curr, number) {
 		"data-type": type
 
 	});
-	tile.hide().appendTo(listItem).delay(delay).fadeIn(2500);
+	tile.hide().appendTo(listItem).fadeIn(600);
 }
 
-// creates and styles the price slider 
-// using jQuery UI slider pips plugn
-function sliderStyle() {
-	$('.price-sort-slider').slider({
-		min: 1,
-		max: 2,
-		step: 1,
-		animate: 'slow'
-	});
-	$('.price-sort-slider').slider('pips', {
-		rest: "label",
-		labels: ["Nearest", "Highest Rated"]
-	});
-}
-
-//gets user location via browser geolocation
-//calls for ip Address info as a back up
+// gets user location via browser geolocation
+// calls for ip Address info as a back up
 function get_location() {
 	if (Modernizr.geolocation) {
 		navigator.geolocation.getCurrentPosition(successFunction, geoFallback());
@@ -107,34 +90,38 @@ function get_location() {
 	}
 }
 
-//upon geolocation success lat and lng are set and
-//tiles are created
+// upon geolocation success lat and lng are set and
+// tiles are created
+//   position - object containing user's coordinates
 function successFunction(position) {
 	lat = position.coords.latitude;
 	lng = position.coords.longitude;
 	console.log("Getting location");
 	latlng = new google.maps.LatLng(lat, lng);
 	codeLatLng(latlng);
-	$("ul").slideDown();
-	createTiles(); // creates and fades in tiles
+	$("ul").slideDown(500, function() {
+		createTiles(); // creates and fades in tiles
+	});
 	console.log("Ready to find!");
 }
 
 // uses ipinfo.io to find their city based on their ip;
 // serves as fallback in case geolocation does not work,
 // not as reliable as geolocation
+//   error - problem!
 function geoFallback(error) {
-	console.log("geoFallback called");
 	$.get("http://ipinfo.io", function(response) {
 		console.log(response.city, response.region);
 		if (response.city != null || response.city != undefined) {
-			appendCity(response.city);
+			updateMessage("Getting your location - hold still!");
 		}
 	}, "jsonp");
-	
+
 }
 
-
+// reverse geocodes based on user's latitiude and longitude
+// and looks for the name of their city in Google's Geocode response
+//   latlng - user's latitude/longitude
 function codeLatLng(latlng) {
 	geocoder = new google.maps.Geocoder();
 	geocoder.geocode({
@@ -151,9 +138,7 @@ function codeLatLng(latlng) {
 							//this is the object you are looking for
 							console.log(results[0].address_components[i].long_name);
 							city = results[0].address_components[i].long_name;
-							if ($("#city").html() !== city) {
-								appendCity(city);
-							}
+							updateMessage("How&#39;re you feelin&#39; over in <span id='city'>" + city + "</span> today?");
 							break;
 						}
 					}
@@ -168,44 +153,159 @@ function codeLatLng(latlng) {
 }
 
 // fade out tiles and slider after tile chosen
+//   categories - the corresponding Yelp food categories of the chosen mood
+//   image      - the mood's marker icon 
 function afterSelection(categories, image) {
-	$(".tiles, .price-sort-slider").fadeOut();
+	$(".tiles, .type_foods").fadeOut(2);
 	createMap(latlng);
 	yelpTest(categories, image, latlng);
-}
-// creates the map object
-function createMap(ll) {
 
+}
+
+// creates the map object with options and styling
+//   ll - latitude/longitude to center map on
+function createMap(ll) {
 	var mapOptions = {
 		center: ll,
 		zoom: 16,
 		mapTypeId: google.maps.MapTypeId.ROADMAP,
-		styles: [{"featureType": "water", "stylers": [{"color": "#19a0d8"}]},{"featureType": "administrative","elementType": "labels.text.stroke",
-            "stylers": [{"color": "#ffffff"},{"weight": 6}]},{"featureType": "administrative", "elementType": "labels.text.fill","stylers": [{
-            "color": "#e85113"}]},{"featureType": "road.highway","elementType": "geometry.stroke","stylers": [{"color": "#efe9e4"},{"lightness": -40
-            }]},{"featureType": "road.arterial","elementType": "geometry.stroke","stylers": [{"color": "#efe9e4"},{"lightness": -20}]},{"featureType": "road",
-            "elementType": "labels.text.stroke","stylers": [{"lightness": 100}]},{"featureType": "road","elementType": "labels.text.fill","stylers": [
-            {"lightness": -100}]},{"featureType": "road.highway","elementType": "labels.icon"}, {"featureType": "landscape","elementType": "labels","stylers": [
-            {"visibility": "off"}]},{"featureType": "landscape","stylers": [{"lightness": 20},{"color": "#efe9e4"}]},{"featureType": "landscape.man_made","stylers": [
-            {"visibility": "off"}]},{"featureType": "water","elementType": "labels.text.stroke","stylers": [{"lightness": 100}]},{"featureType": "water",
-            "elementType": "labels.text.fill","stylers": [{"lightness": -100}]},{"featureType": "poi","elementType": "labels.text.fill","stylers": 
-            [{"hue": "#11ff00"}]},{"featureType": "poi","elementType": "labels.text.stroke","stylers": [{"lightness": 100}]},{"featureType": "poi",
-            "elementType": "labels.icon","stylers": [{"hue": "#4cff00"},{"saturation": 58}]},{"featureType": "poi","elementType": "geometry","stylers": [
-            {"visibility": "on"},{"color": "#f0e4d3"}]},{"featureType": "road.highway","elementType": "geometry.fill","stylers": [{"color": "#efe9e4"},{
-            "lightness": -25}]},{"featureType": "road.arterial","elementType": "geometry.fill","stylers": [{"color": "#efe9e4"}, {"lightness": -10}]},{
-            "featureType": "poi","elementType": "labels","stylers": [{"visibility": "simplified"}]}]}
-
+		styles: [{
+			"featureType": "water",
+			"stylers": [{
+				"color": "#19a0d8"
+			}]
+		}, {
+			"featureType": "administrative",
+			"elementType": "labels.text.stroke",
+			"stylers": [{
+				"color": "#ffffff"
+			}, {
+				"weight": 6
+			}]
+		}, {
+			"featureType": "administrative",
+			"elementType": "labels.text.fill",
+			"stylers": [{
+				"color": "#e85113"
+			}]
+		}, {
+			"featureType": "road.highway",
+			"elementType": "geometry.stroke",
+			"stylers": [{
+				"color": "#efe9e4"
+			}, {
+				"lightness": -40
+			}]
+		}, {
+			"featureType": "road.arterial",
+			"elementType": "geometry.stroke",
+			"stylers": [{
+				"color": "#efe9e4"
+			}, {
+				"lightness": -20
+			}]
+		}, {
+			"featureType": "road",
+			"elementType": "labels.text.stroke",
+			"stylers": [{
+				"lightness": 100
+			}]
+		}, {
+			"featureType": "road",
+			"elementType": "labels.text.fill",
+			"stylers": [{
+				"lightness": -100
+			}]
+		}, {
+			"featureType": "road.highway",
+			"elementType": "labels.icon"
+		}, {
+			"featureType": "landscape",
+			"elementType": "labels",
+			"stylers": [{
+				"visibility": "off"
+			}]
+		}, {
+			"featureType": "landscape",
+			"stylers": [{
+				"lightness": 20
+			}, {
+				"color": "#efe9e4"
+			}]
+		}, {
+			"featureType": "landscape.man_made",
+			"stylers": [{
+				"visibility": "off"
+			}]
+		}, {
+			"featureType": "water",
+			"elementType": "labels.text.stroke",
+			"stylers": [{
+				"lightness": 100
+			}]
+		}, {
+			"featureType": "water",
+			"elementType": "labels.text.fill",
+			"stylers": [{
+				"lightness": -100
+			}]
+		}, {
+			"featureType": "poi",
+			"elementType": "labels.text.fill",
+			"stylers": [{
+				"hue": "#11ff00"
+			}]
+		}, {
+			"featureType": "poi",
+			"elementType": "labels.text.stroke",
+			"stylers": [{
+				"lightness": 100
+			}]
+		}, {
+			"featureType": "poi",
+			"elementType": "labels.icon",
+			"stylers": [{
+				"hue": "#4cff00"
+			}, {
+				"saturation": 58
+			}]
+		}, {
+			"featureType": "poi",
+			"elementType": "geometry",
+			"stylers": [{
+				"visibility": "on"
+			}, {
+				"color": "#f0e4d3"
+			}]
+		}, {
+			"featureType": "road.highway",
+			"elementType": "geometry.fill",
+			"stylers": [{
+				"color": "#efe9e4"
+			}, {
+				"lightness": -25
+			}]
+		}, {
+			"featureType": "road.arterial",
+			"elementType": "geometry.fill",
+			"stylers": [{
+				"color": "#efe9e4"
+			}, {
+				"lightness": -10
+			}]
+		}, {
+			"featureType": "poi",
+			"elementType": "labels",
+			"stylers": [{
+				"visibility": "simplified"
+			}]
+		}]
+	}
 	map = new google.maps.Map($('.map-container')[0], mapOptions);
 }
 
-function appendCity(city) {
-	$("#city").hide().html(city).fadeIn();
-}
-
-function onGeoError(err) {
-	updateMessage("Sorry, your shit is BROKEN SUCKA!");
-}
-
+// updates the location message
+//   msg - the message that will be inserted into .message
 function updateMessage(msg) {
 	$('.message').hide().html(msg).fadeIn();
 }
