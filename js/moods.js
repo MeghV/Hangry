@@ -14,7 +14,8 @@
 		"type": "healthy",
 		"image": "img/sad.png",
 		"categories": "newamerican,tradamerican,bbq,breakfast_brunch,buffets,burgers,cafeteria,cheesesteaks,chicken_wings,comfortfood,delis,hotpot,sandwiches,soulfood,soup,southern"
-	}, {
+	}
+	, {
 		"mood": "Baked",
 		"type": "awesome",
 		"image": "img/baked.png",

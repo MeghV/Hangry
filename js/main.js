@@ -88,6 +88,7 @@ function get_location() {
 }
 
 function successFunction(position) {
+	//$(".hiddenDiv").css("display", "none");
 	lat = position.coords.latitude;
 	lng = position.coords.longitude;
 	console.log("Getting location");
@@ -101,7 +102,7 @@ function successFunction(position) {
 // uses ipinfo.io to find their city based on their ip;
 // serves as fallback in case geolocation does not work,
 // not as reliable as geolocation
-function geoFallback() {
+function geoFallback(error) {
 	console.log("geoFallback called");
 	$.get("http://ipinfo.io", function(response) {
 		console.log(response.city, response.region);
@@ -109,8 +110,37 @@ function geoFallback() {
 			appendCity(response.city);
 		}
 	}, "jsonp");
+	// $(".submit").click(function() {
+	// 	var address = $(".submit-location").val();
+	// 	//var value = select.val();
+	// 	//var address = value.toString();
+	// 	geocode(address);
+	// })
 }
 
+// function geocode(address) {
+// 	geocoder = new google.maps.Geocoder(); 
+// 	geocoder.geocode({'address': address},
+// 	function(results, status) {
+// 		if (status == google.maps.GeocoderStatus.OK) {
+// 		// latitude and longitude
+// 			lat = results[0].geometry.location.nb;
+// 			lng = results[0].geometry.location.ob;
+
+// 			latlng = new google.maps.LatLng(lat, lng);
+// 			successFunction2(latlng);
+// 		}
+// 	});
+// }
+
+// function successFunction2(latlng) {
+// 	$(".hiddenDiv").css("display", "none");
+// 	console.log("Getting location");
+// 	codeLatLng(latlng);
+// 	$("ul").slideDown();
+// 	createTiles(); // creates and fades in tiles
+// 	console.log("Ready to find!");
+// }
 
 function codeLatLng(latlng) {
 	geocoder = new google.maps.Geocoder();
