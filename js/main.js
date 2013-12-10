@@ -113,7 +113,7 @@ function geoFallback(error) {
 	$.get("http://ipinfo.io", function(response) {
 		console.log(response.city, response.region);
 		if (response.city != null || response.city != undefined) {
-			updateMessage("Getting your location - hold still!");
+			updateMessage("How&#39;re you feelin&#39; over in <span id='city'>" + response.city + "</span> today?");
 		}
 	}, "jsonp");
 
