@@ -5,7 +5,6 @@ $bg: url('../img/asian.jpg');
 $black: #000;
 $tiles: 4;
 
-
 // Mixins 
 
 @mixin background-props {
@@ -124,14 +123,28 @@ main {
 	h3 {
 		text-align: left;
 		padding-left: 15px;
+		@media screen and (max-width: 768px) {
+			display: block;
+			float: none;
+			text-align: center;
+			padding-bottom: 0px;
+			margin-bottom: 5px;
+			padding-left: 0px;
+		}
 	}
 	position: relative;
+	@media screen and (max-width: 768px) {
+		height: 290px;
+	}
 }
 
 .type_foods {
 	position: absolute;
 	bottom: 0;
 	padding-left: 15px;
+	@media screen and (max-width: 768px) {
+		padding-top: 15px;
+	}
 }
 .myButton {
 	background: rgba(0,0,0,.6);		
@@ -152,6 +165,12 @@ main {
 	box-sizing: border-box;
 	color: white;
 	display: none;
+	@media screen and (max-width: 768px) {
+		float: none;
+		text-align: center;		
+		margin-top: 0px;
+		margin-bottom: 5px;
+	}
 	@include hoverstyle;
 	&:hover {
 		background-image: url('../img/next_arrow.png');
@@ -205,6 +224,21 @@ main {
 
 .templates {
 	display: none;
+}
+
+.icon {
+	width: 100%;
+	@media screen and (max-width: 768px) {
+		margin: 0;
+	}
+    img {
+		width: 100px;
+		height: 100px;
+		@media screen and (max-width: 768px) {
+			width: 50%;
+			height: 50%;
+		}
+	}
 }
 
 ul {
