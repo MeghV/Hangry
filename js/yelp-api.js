@@ -71,6 +71,11 @@ function yelpTest(categories, face) {
       console.log(businesses);
       geocode(data.businesses[i], image); // geocodes business based on index
       $(".myButton").fadeIn().click(function() {
+        i++;
+        if (i === businesses.length) {
+          i = 0;
+        }
+        console.log(i);
         nextPlace();
       });
     }
@@ -79,12 +84,8 @@ function yelpTest(categories, face) {
 
 // increments the array and geocodes next business 
 function nextPlace() {
-  i++;
   var place = businesses[i];
   geocode(place);
-  if (i === businesses.length - 1) {
-    i = 0;
-  }
 }
 
 // based on the current place where i is in the businesses array,
