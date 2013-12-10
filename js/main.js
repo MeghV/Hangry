@@ -8,13 +8,22 @@ $(function() {
 	var service;
 	var map;
 	get_location(); // gets users location
-
+	hoverFood();
 	clickTile();
 	// tile.fadeIn(4000);
-
-
 }); //onload
 
+function hoverFood() {
+	$(".list-item").hover(function() {
+		var types = $(this).attr("data-type");
+		var cats = $(this).attr("data-pretty");
+		var string = "We'll look for " + types + " foods like " + cats;
+		$(".type_foods").html(string);
+		$(".type_foods").hide().appendTo($(".location")).fadeIn();
+	}, function() {
+		$(".type_foods").fadeOut();
+	});
+}
 function clickTile() {
 	$(".list-item").click(function() {
 		var cats = $(this).attr("data-categories");
@@ -51,7 +60,9 @@ function populateTiles(delay, curr, number) {
 	var mood = curr.mood;
 	var img = curr.image;
 	var cats = curr.categories;
+	var pretty = curr.pretty_cats;
 	var mapicon = curr.map_img;
+	var type = curr.type;
 	var tile = $(".templates .holder").clone();
 	console.log(mood);
 	tile.find("img").attr({
@@ -63,7 +74,10 @@ function populateTiles(delay, curr, number) {
 	var listItem = $(".tiles .list-item").eq(number);
 	listItem.attr({
 		"data-categories": cats,
-		"data-icon": mapicon
+		"data-pretty": pretty,
+		"data-icon": mapicon,
+		"data-type": type
+
 	});
 	tile.hide().appendTo(listItem).delay(delay).fadeIn(2500);
 }

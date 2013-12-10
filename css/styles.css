@@ -59,12 +59,18 @@ main {
 .location {
   margin-top: 0px;
   background: rgba(227, 227, 227, 0.8);
-  padding-bottom: 30px;
+  padding-bottom: 40px;
   height: 270px;
-  text-align: center; }
+  text-align: center;
+  position: relative; }
   .location h3 {
     text-align: left;
     padding-left: 15px; }
+
+.type_foods {
+  position: absolute;
+  bottom: 0;
+  padding-left: 15px; }
 
 .myButton {
   background: rgba(0, 0, 0, 0.6);
@@ -131,10 +137,9 @@ ul {
     display: inline-block;
     background: rgba(0, 0, 0, 0.6);
     color: white;
-    float: left;
     border: 1px solid black;
     margin-right: 1.5%;
-    width: 23.875%;
+    width: 22.875%;
     box-sizing: border-box;
     height: 200px;
     -webkit-transition: all 0.5s ease;
