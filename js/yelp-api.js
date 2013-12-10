@@ -1,4 +1,4 @@
-var i = 0; // incrementer to go through businesses as user clicks next
+var step = 0; // incrementer to go through businesses as user clicks next
 var markers = []; // markers on map
 var infowindows = []; // infowindows on map
 var businesses; // array of businesses returned from Yelp
@@ -69,13 +69,14 @@ function yelpTest(categories, face) {
       businesses = data.businesses; // sets businesses to returned businesses
       randomize(); // randomize array of results
       console.log(businesses);
-      geocode(data.businesses[i], image); // geocodes business based on index
+      geocode(data.businesses[step], image); // geocodes business based on index
       $(".myButton").fadeIn().click(function() {
-        i++;
-        if (i === businesses.length) {
-          i = 0;
+        $(".myButton").attr("disabled", "disabled");
+        step++;
+        if (step === businesses.length) {
+          step = 0;
         }
-        console.log(i);
+        console.log(step);
         nextPlace();
       });
     }
@@ -84,7 +85,7 @@ function yelpTest(categories, face) {
 
 // increments the array and geocodes next business 
 function nextPlace() {
-  var place = businesses[i];
+  var place = businesses[step];
   geocode(place);
 }
 
@@ -93,7 +94,7 @@ function nextPlace() {
 //   place - current place being examined (businesses[i])
 function geocode(place) {
   // removes existing markers
-  for (i in markers) {
+  for (var i in markers) {
     markers[i].setMap(null);
     directionsDisplay.setMap(null);
   }
@@ -164,10 +165,10 @@ function addMarker(destination, place) {
   var nm = place.name;
   console.log(nm);
   var stars = place.rating_img_url;
-  var contentString = "<em>" + nm + "</em> is rated <img src=" + stars + "> on Yelp!";
+  var contentString = "<div><em>" + nm + "</em> is rated <img src=" + stars + "> on Yelp!</div>";
   var infowindow = new google.maps.InfoWindow({
     content: contentString,
-    maxWidth: 800
+    maxWidth: 700
   });
 
   // opens and closes infowindow based on hover state
@@ -178,6 +179,8 @@ function addMarker(destination, place) {
     infowindow.close();
   });
   infowindows.push(infowindow);
+  $(".myButton").removeAttr("disabled");
+
 }
 
 // converts the distance to the place from meters

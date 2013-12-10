@@ -107,6 +107,14 @@ main {
     margin-bottom: -1; }
   .myButton:focus {
     outline: 0; }
+  .myButton:disabled {
+    border: 1px solid black;
+    background: rgba(0, 0, 0, 0.3);
+    cursor: wait;
+    background-image: url("../img/next_arrow.png");
+    background-repeat: no-repeat;
+    background-position: 99% 50%;
+    background-size: 20px 20px; }
 
 .message {
   float: left;
