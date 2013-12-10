@@ -97,6 +97,8 @@ function sliderStyle() {
 	});
 }
 
+//gets user location via browser geolocation
+//calls for ip Address info as a back up
 function get_location() {
 	if (Modernizr.geolocation) {
 		navigator.geolocation.getCurrentPosition(successFunction, geoFallback());
@@ -105,6 +107,8 @@ function get_location() {
 	}
 }
 
+//upon geolocation success lat and lng are set and
+//tiles are created
 function successFunction(position) {
 	lat = position.coords.latitude;
 	lng = position.coords.longitude;
