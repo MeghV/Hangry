@@ -39,10 +39,9 @@ main {
 
 .holder {
   padding-top: 25px;
-  padding-bottom: 45px;
+  padding-bottom: 0px;
   box-sizing: border-box;
-  margin: 10px;
-  height: 100%; }
+  margin: 10px; }
   .holder .moodName {
     margin-top: 10px;
     text-align: center; }

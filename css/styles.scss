@@ -96,11 +96,9 @@ main {
 }
 
 .holder {
-  @include padding-tb(25px, 45px);
+  @include padding-tb(25px, 0px);
   box-sizing: border-box;
   margin: 10px;
-  height: 100%;
-
   .moodName {
   	  	margin-top: 10px;
   		text-align: center;
