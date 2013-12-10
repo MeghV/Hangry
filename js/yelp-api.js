@@ -164,7 +164,7 @@ function addMarker(destination, place) {
   var contentString = "<em>" + nm + "</em> is rated <img src=" + stars + "> on Yelp!";
   var infowindow = new google.maps.InfoWindow({
     content: contentString,
-    maxWidth: 500
+    maxWidth: 800
   });
   google.maps.event.addListener(marker, 'mouseover', function() {
     infowindow.open(map,marker);
