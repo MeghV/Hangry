@@ -8,17 +8,26 @@ $(function() {
 	var service;
 	var map;
 	get_location(); // gets users location
-
+	hoverFood();
 	clickTile();
 	// tile.fadeIn(4000);
-
-
 }); //onload
 
+function hoverFood() {
+	$(".list-item").hover(function() {
+		var types = $(this).attr("data-type");
+		var cats = $(this).attr("data-pretty");
+		var string = "We'll look for " + types + " foods like " + cats;
+		$(".type_foods").html(string);
+		$(".type_foods").hide().appendTo($(".location")).fadeIn(500);
+	}, function() {
+		$(".type_foods").fadeOut();
+	});
+}
 function clickTile() {
 	$(".list-item").click(function() {
 		var cats = $(this).attr("data-categories");
-		var img = $(this).find("img").attr("src");
+		var img = $(this).attr("data-icon");
 		console.log(cats);
 		console.log(img);
 		afterSelection(cats, img);
@@ -51,6 +60,9 @@ function populateTiles(delay, curr, number) {
 	var mood = curr.mood;
 	var img = curr.image;
 	var cats = curr.categories;
+	var pretty = curr.pretty_cats;
+	var mapicon = curr.map_img;
+	var type = curr.type;
 	var tile = $(".templates .holder").clone();
 	console.log(mood);
 	tile.find("img").attr({
@@ -60,7 +72,13 @@ function populateTiles(delay, curr, number) {
 	});
 	tile.find(".moodName").html(mood);
 	var listItem = $(".tiles .list-item").eq(number);
-	listItem.attr("data-categories", cats)
+	listItem.attr({
+		"data-categories": cats,
+		"data-pretty": pretty,
+		"data-icon": mapicon,
+		"data-type": type
+
+	});
 	tile.hide().appendTo(listItem).delay(delay).fadeIn(2500);
 }
 
@@ -187,20 +205,138 @@ function createMap(ll) {
 		center: ll,
 		zoom: 16,
 		mapTypeId: google.maps.MapTypeId.ROADMAP,
-		styles: [{"featureType": "water", "stylers": [{"color": "#19a0d8"}]},{"featureType": "administrative","elementType": "labels.text.stroke",
-            "stylers": [{"color": "#ffffff"},{"weight": 6}]},{"featureType": "administrative", "elementType": "labels.text.fill","stylers": [{
-            "color": "#e85113"}]},{"featureType": "road.highway","elementType": "geometry.stroke","stylers": [{"color": "#efe9e4"},{"lightness": -40
-            }]},{"featureType": "road.arterial","elementType": "geometry.stroke","stylers": [{"color": "#efe9e4"},{"lightness": -20}]},{"featureType": "road",
-            "elementType": "labels.text.stroke","stylers": [{"lightness": 100}]},{"featureType": "road","elementType": "labels.text.fill","stylers": [
-            {"lightness": -100}]},{"featureType": "road.highway","elementType": "labels.icon"}, {"featureType": "landscape","elementType": "labels","stylers": [
-            {"visibility": "off"}]},{"featureType": "landscape","stylers": [{"lightness": 20},{"color": "#efe9e4"}]},{"featureType": "landscape.man_made","stylers": [
-            {"visibility": "off"}]},{"featureType": "water","elementType": "labels.text.stroke","stylers": [{"lightness": 100}]},{"featureType": "water",
-            "elementType": "labels.text.fill","stylers": [{"lightness": -100}]},{"featureType": "poi","elementType": "labels.text.fill","stylers": 
-            [{"hue": "#11ff00"}]},{"featureType": "poi","elementType": "labels.text.stroke","stylers": [{"lightness": 100}]},{"featureType": "poi",
-            "elementType": "labels.icon","stylers": [{"hue": "#4cff00"},{"saturation": 58}]},{"featureType": "poi","elementType": "geometry","stylers": [
-            {"visibility": "on"},{"color": "#f0e4d3"}]},{"featureType": "road.highway","elementType": "geometry.fill","stylers": [{"color": "#efe9e4"},{
-            "lightness": -25}]},{"featureType": "road.arterial","elementType": "geometry.fill","stylers": [{"color": "#efe9e4"}, {"lightness": -10}]},{
-            "featureType": "poi","elementType": "labels","stylers": [{"visibility": "simplified"}]}]}
+		styles: [{
+			"featureType": "water",
+			"stylers": [{
+				"color": "#19a0d8"
+			}]
+		}, {
+			"featureType": "administrative",
+			"elementType": "labels.text.stroke",
+			"stylers": [{
+				"color": "#ffffff"
+			}, {
+				"weight": 6
+			}]
+		}, {
+			"featureType": "administrative",
+			"elementType": "labels.text.fill",
+			"stylers": [{
+				"color": "#e85113"
+			}]
+		}, {
+			"featureType": "road.highway",
+			"elementType": "geometry.stroke",
+			"stylers": [{
+				"color": "#efe9e4"
+			}, {
+				"lightness": -40
+			}]
+		}, {
+			"featureType": "road.arterial",
+			"elementType": "geometry.stroke",
+			"stylers": [{
+				"color": "#efe9e4"
+			}, {
+				"lightness": -20
+			}]
+		}, {
+			"featureType": "road",
+			"elementType": "labels.text.stroke",
+			"stylers": [{
+				"lightness": 100
+			}]
+		}, {
+			"featureType": "road",
+			"elementType": "labels.text.fill",
+			"stylers": [{
+				"lightness": -100
+			}]
+		}, {
+			"featureType": "road.highway",
+			"elementType": "labels.icon"
+		}, {
+			"featureType": "landscape",
+			"elementType": "labels",
+			"stylers": [{
+				"visibility": "off"
+			}]
+		}, {
+			"featureType": "landscape",
+			"stylers": [{
+				"lightness": 20
+			}, {
+				"color": "#efe9e4"
+			}]
+		}, {
+			"featureType": "landscape.man_made",
+			"stylers": [{
+				"visibility": "off"
+			}]
+		}, {
+			"featureType": "water",
+			"elementType": "labels.text.stroke",
+			"stylers": [{
+				"lightness": 100
+			}]
+		}, {
+			"featureType": "water",
+			"elementType": "labels.text.fill",
+			"stylers": [{
+				"lightness": -100
+			}]
+		}, {
+			"featureType": "poi",
+			"elementType": "labels.text.fill",
+			"stylers": [{
+				"hue": "#11ff00"
+			}]
+		}, {
+			"featureType": "poi",
+			"elementType": "labels.text.stroke",
+			"stylers": [{
+				"lightness": 100
+			}]
+		}, {
+			"featureType": "poi",
+			"elementType": "labels.icon",
+			"stylers": [{
+				"hue": "#4cff00"
+			}, {
+				"saturation": 58
+			}]
+		}, {
+			"featureType": "poi",
+			"elementType": "geometry",
+			"stylers": [{
+				"visibility": "on"
+			}, {
+				"color": "#f0e4d3"
+			}]
+		}, {
+			"featureType": "road.highway",
+			"elementType": "geometry.fill",
+			"stylers": [{
+				"color": "#efe9e4"
+			}, {
+				"lightness": -25
+			}]
+		}, {
+			"featureType": "road.arterial",
+			"elementType": "geometry.fill",
+			"stylers": [{
+				"color": "#efe9e4"
+			}, {
+				"lightness": -10
+			}]
+		}, {
+			"featureType": "poi",
+			"elementType": "labels",
+			"stylers": [{
+				"visibility": "simplified"
+			}]
+		}]
+	}
 
 	map = new google.maps.Map($('.map-container')[0], mapOptions);
 }

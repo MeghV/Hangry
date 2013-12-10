@@ -96,11 +96,9 @@ main {
 }
 
 .holder {
-  @include padding-tb(25px, 45px);
+  @include padding-tb(25px, 0px);
   box-sizing: border-box;
   margin: 10px;
-  height: 100%;
-
   .moodName {
   	  	margin-top: 10px;
   		text-align: center;
@@ -120,28 +118,49 @@ main {
 .location {
 	margin-top: 0px;
 	background: rgba(227, 227, 227, .8);
-	padding-bottom: 30px;
+	padding-bottom: 40px;
 	height: 270px;
 	text-align: center;
 	h3 {
 		text-align: left;
 		padding-left: 15px;
 	}
+	position: relative;
 }
 
+.type_foods {
+	position: absolute;
+	bottom: 0;
+	padding-left: 15px;
+}
 .myButton {
-	display: none;
+	background: rgba(0,0,0,.6);		
+	background-image: url('../img/next_arrow.png');
+	background:{
+		repeat: no-repeat;
+		position: 99% 50%;
+		size: 20px 20px;
+	}
 	@include padding-tb(5px,5px);
+	padding-right: 25px;
 	float: right;
 	margin: 1em 0;
 	font-size: 1.17em;
 	margin-right: 15px;
 	cursor: pointer;
-	background: rgba(0,0,0,.6);		
 	border: 1px solid black;
 	box-sizing: border-box;
 	color: white;
+	display: none;
 	@include hoverstyle;
+	&:hover {
+		background-image: url('../img/next_arrow.png');
+		background:{
+			repeat: no-repeat;
+			position: 99% 50%;
+			size: 20px 20px;
+		}	
+	}
 	&:active {
 		margin-bottom: -1;
 	}
@@ -182,11 +201,10 @@ ul {
 		display: inline-block;
 		background: rgba(0,0,0,.6);
 		color: white;
-		float: left;
 		border: 1px solid black;
 		$margin-r: 1.5%;
 		margin-right: $margin-r;
-		width: (100% - ($margin-r * ($tiles - 1))) / $tiles;
+		width: ((100% - ($margin-r * ($tiles - 1))) / $tiles) - 1%;
 		&#last {
 			margin-right: 0;
 		}
