@@ -180,6 +180,13 @@ main {
 	height: 270px;
 }
 
+.directions {
+	color: rgba(0, 0, 0, 0.6);
+	@include transitions(all .5s ease);
+	&:hover {
+		color: red;			
+	}
+}
 .price-sort-slider {
 	margin: 0 auto;
 	width: 80%;
