@@ -162,3 +162,8 @@ ul {
       border: 1px solid red;
       cursor: pointer;
       background: rgba(0, 0, 0, 0.4); }
+
+.hiddenDiv {
+  margin: 25px;
+  display: none;
+}
